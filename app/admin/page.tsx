@@ -10,6 +10,7 @@ import {
   CheckCircle2,
   ChevronRight,
   ClipboardList,
+  ClipboardCheck,
   Download,
   FileSpreadsheet,
   LayoutDashboard,
