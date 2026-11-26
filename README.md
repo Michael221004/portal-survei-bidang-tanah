@@ -1,58 +1,42 @@
-# Portal Survei & Pemetaan Bidang Tanah
+# SIMPATI — Sistem Informasi Survei dan Pemetaan Bidang Tanah
 
-Aplikasi Next.js untuk portal informasi publik, formulir survei tanpa login, statistik, dashboard admin, dan ekspor Excel.
+Portal publik untuk informasi dan pendataan survei bidang tanah, dengan dashboard administrator, statistik, dan ekspor Excel.
 
-## Fitur
-- Beranda informasi survei dan pemetaan bidang tanah.
-- Alur kegiatan survei.
-- Statistik publik: kunjungan dan formulir masuk.
-- Formulir publik tanpa akun.
-- Dashboard admin dengan autentikasi Supabase.
-- Pencarian data dan ekspor Excel (.xlsx).
-- Koordinat lintang/bujur divalidasi dalam rentang geografis.
+## Teknologi
+- Next.js 15 / React
+- Supabase (database dan autentikasi admin)
+- ExcelJS (ekspor `.xlsx`)
+- Lucide React (ikon)
+- CSS responsif (desktop, tablet, dan HP)
+- Vercel (deployment)
 
-## 1. Persiapan Supabase
-1. Buat proyek gratis di https://supabase.com.
-2. Buka SQL Editor, jalankan seluruh isi `supabase/schema.sql`.
-3. Buka Project Settings → API, salin Project URL dan `anon`/publishable key.
-4. Buat file `.env.local` di folder proyek berdasarkan `.env.example`.
-5. Isi `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+## Halaman
+- `/` — halaman publik SIMPATI
+- `/form` — formulir survei bidang tanah tanpa login masyarakat
+- `/admin` — login dan dashboard administrator
 
-## 2. Buat akun admin
-1. Di Supabase, buka Authentication → Users → Add user.
-2. Buat pengguna admin dengan email dan kata sandi yang kuat.
-3. Salin UUID pengguna tersebut.
-4. Jalankan SQL berikut di SQL Editor, ganti UUID:
-   ```sql
-   insert into public.user_roles (user_id, role)
-   values ('UUID-USER-ADMIN', 'admin');
-   ```
-5. Buka `/admin` untuk login.
+## Persiapan lokal
+1. Instal Node.js LTS.
+2. Salin `.env.example` menjadi `.env.local`.
+3. Isi `NEXT_PUBLIC_SUPABASE_URL` dan `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` milik proyek Supabase.
+4. Jalankan `npm install`.
+5. Jalankan `npm run dev`.
+6. Buka `http://localhost:3000`.
 
-Jangan pernah menaruh `service_role` key di browser, GitHub, atau variabel `NEXT_PUBLIC_*`.
+## Supabase
+Jalankan `supabase/schema.sql` melalui SQL Editor Supabase. Buat akun admin pada Authentication → Users, lalu masukkan UUID pengguna ke `public.user_roles` dengan role `admin`.
 
-## 3. Jalankan di komputer (Windows)
-Install Node.js versi LTS dari https://nodejs.org.
-Buka folder proyek melalui terminal:
-```bash
-npm install
-npm run dev
-```
-Buka http://localhost:3000
+## Deployment Vercel
+Tambahkan environment variables berikut pada Project Settings → Environment Variables:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
 
-## 4. Deploy gratis ke Vercel
-1. Upload folder proyek ke repository GitHub (jangan upload `.env.local`).
-2. Masuk ke https://vercel.com dan import repository tersebut.
-3. Pada Project Settings → Environment Variables, tambahkan:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-4. Deploy. Framework akan terdeteksi sebagai Next.js.
+Jangan pernah memasukkan Supabase Secret key atau service-role key ke variabel `NEXT_PUBLIC_*` atau repository publik.
 
-## Catatan penting sebelum dipakai sungguhan
-- Statistik pengunjung adalah hitungan pemanggilan halaman, bukan orang unik. Browser yang sama dihitung maksimal sekali per hari per sesi penyimpanan browser; penghapusan data browser dapat menyebabkan hitungan ulang.
-- Statistik ini bukan analitik anti-bot dan dapat terpengaruh refresh, bot, atau perangkat berbeda.
-- Formulir awal ini belum meminta unggahan sertifikat/foto dan belum memverifikasi kepemilikan tanah.
-- Data bidang tanah dan identitas responden bisa bersifat pribadi. Berikan pemberitahuan privasi, batasi akses admin, gunakan HTTPS, kata sandi kuat, dan tetapkan masa retensi data.
-- Jangan meminta NIK, nomor sertifikat, atau dokumen sensitif kecuali benar-benar diperlukan, memiliki dasar dan persetujuan yang sesuai.
-- Sebelum digunakan untuk survei resmi, sesuaikan pertanyaan, dasar pengumpulan data, persetujuan responden, dan kebijakan privasi dengan instansi/penanggung jawab survei.
-- Form ini menyimpan data teks/angka ke Supabase. Penambahan peta interaktif, unggah foto, beberapa admin, status verifikasi, atau formulir dinamis dapat dibuat pada tahap berikutnya.
+## Catatan fitur
+- Navigasi publik responsif dengan menu hamburger pada perangkat kecil.
+- Sidebar admin menjadi drawer pada layar HP.
+- Halaman admin saat ini menyediakan dashboard, data survei, pencarian, dan ekspor Excel.
+- Menu verifikasi, peta bidang tanah, dan pengaturan admin ditandai sebagai fitur tahap berikutnya; belum aktif.
+- Statistik pengunjung adalah hitungan pemanggilan yang dicatat oleh fungsi database, bukan pengukuran orang unik atau analitik anti-bot.
+- Formulir awal mengumpulkan informasi dasar dan koordinat opsional. Sesuaikan pemberitahuan privasi, kebutuhan data, serta retensi data sebelum dipakai untuk survei resmi.
